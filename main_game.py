@@ -7,6 +7,7 @@ height = 500                                        #height of the app window
 window = pygame.display.set_mode((width, height))   #setting a game window
 pygame.display.set_caption('Pong-game')             #name of the app
 
+ball_direction_factor = 1
 
 class pong_ball():
 
@@ -46,6 +47,11 @@ def game_window_redraw():
     paddle.draw(player_2)
     pygame.display.update()
 
+def changing_ball_direction():
+    global ball_direction_factor
+    if new_ball.y <= player_1.y or new_ball.y >= player_2.y:
+        ball_direction_factor *= -1
+
 run = True
 while run:
     pygame.time.delay(100)
@@ -65,12 +71,17 @@ while run:
     if keys[pygame.K_d]:
         player_2.x += player_2.velocity
 
-    ball_direction = 1
-    if new_ball.y <= player_1.y or new_ball.y >= player_2.y:
-        ball_direction *= -1
-    else:
-        pass
-    new_ball.y += ball_direction * new_ball.velocity
+# Reflection angle
+#     if  new_ball.y > height / 2:
+#         ratio = (new_ball.x - player_1.x) / (player_1.width)
+#         reflection_angle = 2 * ratio - 1
+#     else:
+#         ratio = (new_ball.x - player_1.x) / (player_1.width)
+#         reflection_angle = 2 * ratio - 1
+
+    changing_ball_direction()
+
+    new_ball.y += ball_direction_factor * new_ball.velocity
 
     game_window_redraw()
 
