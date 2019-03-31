@@ -2,32 +2,34 @@ import pygame
 
 pygame.init()
 
-width = 750                                         #width of the app window
-height = 500                                        #height of the app window
-window = pygame.display.set_mode((width, height))   #setting a game window
-pygame.display.set_caption('Pong-game')             #name of the app
+width = 750                                         # width of the app window
+height = 500                                        # height of the app window
+window = pygame.display.set_mode((width, height))   # setting a game window
+pygame.display.set_caption('Pong-game')             # name of the app
 
 ball_direction_factor = 1
 reflection_angle = 0
 initial_ball_velocity = 15
 
-class pong_ball():
 
-    def __init__(self, window, colourRGB, x, y, radius, velocity):
+class PongBall():
+
+    def __init__(self, window, colour_rgb, x, y, radius, velocity):
         self.window = window
-        self.colourRGB = colourRGB
+        self.colourRGB = colour_rgb
         self.x = x
         self.y = y
         self.radius = radius
         self.velocity = velocity
 
-    def draw(self): #drawing a ball in the window
+    def draw(self):  # drawing a ball in the window
         pygame.draw.circle(self.window, self.colourRGB, (self.x, self.y), self.radius)
 
-class paddle():
-    def __init__(self, window, colourRGB, width, height, x, y, velocity, score=0):
+
+class Paddle():
+    def __init__(self, window, colour_rgb, width, height, x, y, velocity, score=0):
         self.window = window
-        self.colourRGB = colourRGB
+        self.colourRGB = colour_rgb
         self.width = width
         self.height = height
         self.x = x
@@ -39,16 +41,17 @@ class paddle():
         pygame.draw.rect(self.window, self.colourRGB, (self.x - self.width / 2, self.y, self.width, self.height))
 
 
-new_ball = pong_ball(window, (255, 0, 100), int(width / 2), int(height / 2), 10, initial_ball_velocity) #new pong ball
-player_1 = paddle(window, (0, 100, 100), width / 8, height / 50, int(width / 2), 0 + int(height / 20), width/50)
-player_2 = paddle(window, (0, 100, 100), width / 8, height / 50, int(width / 2), int(height) - int(height / 20), width/50)
+new_ball = PongBall(window, (255, 0, 100), int(width / 2), int(height / 2), 10, initial_ball_velocity) #new pong ball
+player_1 = Paddle(window, (0, 100, 100), width / 8, height / 50, int(width / 2), 0 + int(height / 20), width/50)
+player_2 = Paddle(window, (0, 100, 100), width / 8, height / 50, int(width / 2), int(height) - int(height / 20), width/50)
+
 
 def game_window_redraw():
     window.fill((0,0,0))
-    pong_ball.draw(new_ball)
-    pong_ball.draw(new_ball)
-    paddle.draw(player_1)
-    paddle.draw(player_2)
+    PongBall.draw(new_ball)
+    PongBall.draw(new_ball)
+    Paddle.draw(player_1)
+    Paddle.draw(player_2)
     text_score_1 = score_font.render('Player 1: ' + str(player_1.score), 1, (155,155,155))
     text_score_2 = score_font.render('Player 2: ' + str(player_2.score), 1, (155,155,155))
     text_continue = continue_font.render('New round? Press Y to continue or N to close', 1,(155,155,155))
@@ -57,6 +60,7 @@ def game_window_redraw():
     if new_ball.velocity == 0:
         window.blit(text_continue, (width/4, 2 * height/3))
     pygame.display.update()
+
 
 def changing_ball_direction():
     p1_init = player_1.x - player_1.width/2
